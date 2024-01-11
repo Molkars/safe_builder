@@ -1,0 +1,31 @@
+name: Generate Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cargo_doc:
+    name: Cargo Doc
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+          components: rustdoc
+      - name: Generate Docs
+        run: cargo doc --no-deps --all-features
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/doc
