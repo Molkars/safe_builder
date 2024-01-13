@@ -1,5 +1,21 @@
 use std::ops::{Deref, DerefMut};
 
+pub trait BuildingType {
+    fn as_option<T>(&self) -> Option<T>;
+}
+
+impl BuildingType for Absent {
+    fn as_option<T>(&self) -> Option<T> {
+        None
+    }
+}
+
+impl<A> BuildingType for Present<A> {
+    fn as_option<T>(&self) -> Option<T> where T: From<&A> {
+        Some(T::from(&self.0))
+    }
+}
+
 pub struct Absent;
 
 #[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
