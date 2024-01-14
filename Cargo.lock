@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "molk_builder"
+name = "safe_builder"
 version = "0.1.0"
